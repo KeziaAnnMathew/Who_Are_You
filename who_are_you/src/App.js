@@ -1,23 +1,28 @@
 
 import './App.css';
+import Row from './components/Row'
 
 function App() {
+  const testaddRow = ()=>{
+    const rows = [];
+
+    // Push the main row first
+    rows.push(
+        <Row
+            key={"key"}
+            theme={"theme"}
+        />
+    );
+
+    return rows;
+  }
   return (
     <div className="App">
       <h2>Staff Visit History</h2>
       <div className="Logtable">
+        Log History
         <table>
-          <tr>
-            <th>
-              Staff Name
-            </th>
-            <th>
-              Entry Time
-            </th>
-            <th>
-              Exit Time
-            </th>
-          </tr>
+          {testaddRow()}
         </table>
       </div>
     </div>
