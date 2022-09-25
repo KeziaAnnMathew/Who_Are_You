@@ -23,58 +23,28 @@ function router(){
         res.header("Access-Control-Allow-Origin", "*")
         res.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS")
         // res.send({data:testVal});
-        // const readFileLines = filename =>
-        // fs.readFileSync(filename)
-        // .toString('UTF8')
-        // .split('\n');
-        // let array = readFileLines('/Users/keziaannmathew/Documents/works/Hack_DFW/textfiles/test.txt');
-        // console.log(array[0])
-        console.log(testVal)
         StaffData.findOne({rfid:testVal[1]},(err,doc)=>{
-            // if(doc){
-            //     var item = {
-            //         rfid:testVal,
-            //         roomid:'testroom',
-            //         entrytime: Date.now(),
-            //         exittime: ''
-            //     }
-            //     var record= RoomData(item);
-            //     record.save();
-            // }
-            console.log(doc)
+            if(doc){
+                var item = {
+                    rfid:doc.rfid,
+                    name:doc.name,
+                    img:doc.img,
+                    title:doc.title,
+                    speciality:doc.speciality,
+                    otherinfo:doc.otherinfo,
+                    roomid:'testroom',
+                    entrytime: Date.now(),
+                    exittime: '',
+                    flag:true
+                }
+                var record= RoomData(item);
+                record.save();
+            }
+        })
+        RoomData.find({roomid:"testroom",rfid:testVal[1]},(err,doc)=>{
             res.send({data:doc})
         })
     })
-
-    //fetch the roomdata with the room id and fetch the corresponding rfid
-    // staffRouter.get('/getlogs',function(req,res){
-    //     res.header("Access-Control-Allow-Origin", "*")
-    //     res.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS")
-    //     const testarr = RoomData.aggregate(
-    //         [
-    //             {   
-    //                 "$project": 
-    //                 {     
-    //                 "roomid": "testroom",  
-    //                 }
-    //             }, 
-    //             { "$lookup": {     
-    //                     "from": "StaffData",     
-    //                     "localField": "rfid",     
-    //                     "foreignField": "rfid",     
-    //                     "as": "staffdata"   
-    //             }}, 
-    //             { "$project": { 
-    //                 "roomid": 1, 
-    //                 "staffdata": { "$arrayElemAt": [ "$countryInfo", 0 ] } 
-    //             }},
-    //             {
-    //                 "$unwind": '$rfid'
-    //             }
-    //         ]
-    //     )
-    //     console.log(testarr)
-    // })
 
     return staffRouter;
 }

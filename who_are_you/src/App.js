@@ -31,7 +31,7 @@ function App() {
   React.useEffect(() => {
     fetch("http://localhost:4572/")
       .then(res =>res.json())
-      .then(data =>setData(data.data));
+      .then(data =>setData(data.data[0]));
   }, []);
   return (
     <div className="App">
@@ -44,12 +44,15 @@ function App() {
             <th>specialty</th>
             <th>img</th>
           </tr>
-          <tr>
-            <td>{data.name}</td>
-            <td>{data.title}</td>
-            <td>{data.specialty}</td>
-            <td><img src={data.img}></img></td>
-          </tr>
+          {/* for(let i=0;i<data.length;i++){ */}
+             <tr>
+             <td>{data.name}</td>
+             <td>{data.title}</td>
+             <td>{data.specialty}</td>
+             <td><img src={data.img}></img></td>
+           </tr>
+          {/* } */}
+         
         </table>
       </div>
       
