@@ -32,7 +32,7 @@ function App() {
     fetch("http://localhost:4572/")
       .then(res =>res.json())
       .then(data =>setData(data.data));
-  }, [data]);
+  }, []);
   return (
     <div className="App">
       <h2>Staff Log</h2>
@@ -40,9 +40,15 @@ function App() {
         <table>
           <tr>
             <th>name</th>
+            <th>title</th>
+            <th>specialty</th>
+            <th>img</th>
           </tr>
           <tr>
             <td>{data.name}</td>
+            <td>{data.title}</td>
+            <td>{data.specialty}</td>
+            <td><img src={data.img}></img></td>
           </tr>
         </table>
       </div>
