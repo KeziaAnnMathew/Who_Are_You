@@ -1,13 +1,12 @@
 const express = require('express');
 const staffRouter=express.Router();
-// const Readline = require("@serialport/parser-readline");
+const StaffData=require("../modals/staffData");
+const RoomData=require("../modals/roomRecord");
+
 const { ReadlineParser } = require('@serialport/parser-readline')
-// const Readline = require("@serialport/parser-readline");
 const { SerialPort } = require('serialport');
 const { parse } = require("path");
 const { default: test } = require("node:test");
-const StaffData=require("../modals/staffData");
-const RoomData=require("../modals/roomRecord");
 const fs = require('fs');
 const port = new SerialPort({ path: 'COM3', baudRate: 9600 });
 var testVal =[];
@@ -19,31 +18,36 @@ parser.on('data', function(data){
 })
 
 function router(){
-    staffRouter.get('/',function(req,res){
+    staffRouter.get('/',async function(req,res){
         res.header("Access-Control-Allow-Origin", "*")
         res.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS")
         // res.send({data:testVal});
-        StaffData.findOne({rfid:testVal[1]},(err,doc)=>{
-            if(doc){
-                var item = {
-                    rfid:doc.rfid,
-                    name:doc.name,
-                    img:doc.img,
-                    title:doc.title,
-                    speciality:doc.speciality,
-                    otherinfo:doc.otherinfo,
-                    roomid:'testroom',
-                    entrytime: Date.now(),
-                    exittime: '',
-                    flag:true
-                }
-                var record= RoomData(item);
-                record.save();
-            }
-        })
-        RoomData.find({roomid:"testroom",rfid:testVal[1]},(err,doc)=>{
-            res.send({data:doc})
-        })
+        let roomdoc = await RoomData.findOne({rfid:testVal[1],roomid:"testroom",exittime:'',flag:true})
+        if(roomdoc == null){
+             StaffData.findOne({rfid:testVal[1]},(err,doc)=>{
+                    var item = {
+                        rfid:doc.rfid,
+                        name:doc.name,
+                        img:doc.img,
+                        title:doc.title,
+                        speciality:doc.speciality,
+                        otherinfo:doc.otherinfo,
+                        roomid:'testroom',
+                        entrytime: Date.now(),
+                        exittime: '',
+                        flag:true
+                    }
+                    var record= RoomData(item);
+                    record.save();
+            })
+        }
+        else{
+            await RoomData.findOneAndUpdate({rfid:testVal[1],roomid:"testroom",exittime:'',flag:true},{flag:false,exittime:Date.now()})
+        }
+        
+        let result = await RoomData.find({roomid:"testroom"})
+        res.send({data:result})
+        
     })
 
     return staffRouter;
