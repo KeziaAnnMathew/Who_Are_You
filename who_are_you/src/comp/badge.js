@@ -19,8 +19,7 @@ class Badge extends Component {
     return (
       <div>
   
-          <h1>{`Number: ${num}`}</h1>
-  
+
       </div>
     );
   }}

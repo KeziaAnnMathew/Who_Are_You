@@ -36,20 +36,21 @@ function App() {
   return (
     <div className="App">
       <h2>Staff Log</h2>
-      <div>
+      <div className="par">
         <table>
           <tr>
-            <th>name</th>
-            <th>title</th>
-            <th>specialty</th>
+            <th>name & title</th>
+            {/* <th>title</th> */}
             <th>img</th>
+            <th>entry Time</th>
+            <th>exit Time</th>
           </tr>
           {/* for(let i=0;i<data.length;i++){ */}
              <tr>
-             <td>{data.name}</td>
-             <td>{data.title}</td>
-             <td>{data.specialty}</td>
+             <td>{data.name}<br></br>{data.title}</td>
+             {/* <td>{data.title}</td> */}
              <td><img src={data.img}></img></td>
+             <td>{data.entrytime}</td>
            </tr>
           {/* } */}
          
