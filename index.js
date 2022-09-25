@@ -12,6 +12,15 @@ const { SerialPort } = require('serialport');
 const { parse } = require("path");
 const { default: test } = require("node:test");
  
+const cors = require('cors');
+var bodyparser= require('body-parser');
+app.use(cors());
+app.use(bodyparser.json());
+app.use(express.urlencoded({extended:true}))
+app.use(express.static(require('path').join(__dirname,'/public')));
+const staffRouter= require('./routes/staffroutes')(app);
+app.use('/',staffRouter);
+
 // Defining the serial port
 const port = new SerialPort({ path: 'COM3', baudRate: 9600 });
 var testVal = [];
@@ -21,6 +30,7 @@ parser.on('data', console.log)
 parser.on('data', function(data){
   testVal.push(data+" ");
 })
+
 
 app.get('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin","*");
