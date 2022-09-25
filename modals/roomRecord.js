@@ -5,10 +5,15 @@ const Schema= mongoose.Schema;
 
 const RoomRecords = new Schema({
     rfid:String,
+    name:String,
+    img:String,
+    title:String,
+    speciality:String,
+    otherinfo:String,
     roomid:String,
-    patientid:String,
     entrytime: Date,
-    exittime: Date
+    exittime: Date,
+    flag:Boolean
 });
 
 var Roomrecords = mongoose.model('roomrecords', RoomRecords);
