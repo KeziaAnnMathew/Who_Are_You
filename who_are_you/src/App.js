@@ -52,8 +52,8 @@ function App() {
              <td>{d.title}</td>
              <td>{d.specialty}</td>
              <td><img src={d.img}></img></td>
-             <td>{d.entrytime}</td>
-             <td>{d.exittime}</td>
+             <td>{new Date(d.entrytime).toLocaleString('en-US')}</td>
+             <td>{d.exittime ? new Date(d.exittime).toLocaleString('en-US'):''}</td>
           </tr>
         ))}
       </table>

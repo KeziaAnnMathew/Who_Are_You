@@ -9,7 +9,7 @@ const { parse } = require("path");
 const { default: test } = require("node:test");
 const fs = require('fs');
 const port = new SerialPort({ path: 'COM3', baudRate: 9600 });
-var testVal =[];
+var testVal = [];
 
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }))
 parser.on('data', console.log)
@@ -22,9 +22,8 @@ function router(){
         res.header("Access-Control-Allow-Origin", "*")
         res.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS")
         // res.send({data:testVal});
-        let roomdoc = await RoomData.findOne({rfid:testVal[1],roomid:"testroom",exittime:'',flag:true})
-        if(roomdoc == null){
-             StaffData.findOne({rfid:testVal[1]},(err,doc)=>{
+        if(testVal.length() == 2){
+                StaffData.findOne({rfid:testVal[1]},(err,doc)=>{
                     var item = {
                         rfid:doc.rfid,
                         name:doc.name,
@@ -39,15 +38,15 @@ function router(){
                     }
                     var record= RoomData(item);
                     record.save();
-            })
+                })
         }
-        else{
-            await RoomData.findOneAndUpdate({rfid:testVal[1],roomid:"testroom",exittime:'',flag:true},{flag:false,exittime:Date.now()})
+        if(testVal.length() ==4){
+            await RoomData.findOneAndUpdate({rfid:testVal[1],roomid:"testroom",exittime:'',flag:true},{flag:false,exittime:Date.now()});
+            testVal=[];
         }
-        
+    
         let result = await RoomData.find({roomid:"testroom"})
         res.send({data:result})
-        
     })
 
     return staffRouter;
